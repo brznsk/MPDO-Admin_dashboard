@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Details</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Sidebar navigation">
+      <div class="brand">
+        <div class="brand__name">Brand</div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-item" href="dashboard.html" data-role-allow="Admin,MPDO Staff,Treasurer's Office,GIS Officer,Inspection Team,Approving Authority" data-route="dashboard">
+          Dashboard
+        </a>
+        <a class="nav-item" href="index.html" data-role-allow="Admin,MPDO Staff,Treasurer's Office,GIS Officer,Inspection Team,Approving Authority" data-route="applicants">
+          Applications List
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,MPDO Staff" data-route="applicants">
+          Records Staff (Intake)
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,GIS Officer" data-route="gis">
+          GIS Specialist
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Inspection Team" data-route="inspection">
+          Drone Pilot
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Inspection Team" data-route="inspection">
+          Project Evaluator
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Inspection Team" data-route="inspection">
+          Draftsman
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Approving Authority" data-route="approval">
+          MPDC Approving Authority (Final Approval)
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <button class="role-btn" id="rolePickerBtn" type="button" title="Change role (Admin only)" style="display: none;">
+          Role: <span id="roleNameInline">Admin</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar__left">
+          <div class="crumb">Dashboard</div>
+          <div class="crumb-sep">/</div>
+          <div class="crumb current">Application Details</div>
+        </div>
+
+        <div class="topbar__right">
+          <input class="search" placeholder="Search..." aria-label="Search applicants" />
+          <div class="user-pill">
+            <img
+              class="avatar-img"
+              src="assets/admin-profile.jpg"
+              alt="John Lawn Doe profile"
+              width="30"
+              height="30"
+            />
+            <div class="user-meta">
+              <div class="user-name">John Lawn Doe</div>
+              <div class="user-role" id="roleNameTop">Admin</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="content__header">
+          <h1 class="page-title">Application Details</h1>
+          <button class="btn" id="backToListBtn" type="button">Back to list</button>
+        </div>
+
+        <div id="detailsRoot"></div>
+
+        <div class="status-legend" aria-label="Status legend">
+          <div class="status-legend__title">Status Legend</div>
+          <div class="status-legend__grid">
+            <div class="status-legend__item">
+              <span class="status-dot status-dot--green" aria-hidden="true"></span>
+              <div>
+                <div>Approved</div>
+                <span>Clearance ready for pickup / issued</span>
+                <div style="color: var(--muted); font-weight: 700; margin-top: 4px;">
+                  Example: Official notice issued; applicant can pick up clearance.
+                </div>
+              </div>
+            </div>
+            <div class="status-legend__item">
+              <span class="status-dot status-dot--orange" aria-hidden="true"></span>
+              <div>
+                <div>Under Review</div>
+                <span>Officer is currently checking your documents</span>
+                <div style="color: var(--muted); font-weight: 700; margin-top: 4px;">
+                  Example: GIS/inspection verification is ongoing; awaiting recommendation.
+                </div>
+              </div>
+            </div>
+            <div class="status-legend__item">
+              <span class="status-dot status-dot--red" aria-hidden="true"></span>
+              <div>
+                <div>Rejected</div>
+                <span>Application was denied (usually zoning violations)</span>
+                <div style="color: var(--muted); font-weight: 700; margin-top: 4px;">
+                  Example: Zoning/hazard conflict found; final legal decision is denied.
+                </div>
+              </div>
+            </div>
+            <div class="status-legend__item">
+              <span class="status-dot status-dot--gray" aria-hidden="true"></span>
+              <div>
+                <div>Pending</div>
+                <span>In the queue but not opened yet</span>
+                <div style="color: var(--muted); font-weight: 700; margin-top: 4px;">
+                  Example: Application submitted but intake validation has not started.
+                </div>
+              </div>
+            </div>
+            <div class="status-legend__item">
+              <span class="status-dot status-dot--yellow" aria-hidden="true"></span>
+              <div>
+                <div>Incomplete</div>
+                <span>Missing documents (applicant needs to take action)</span>
+                <div style="color: var(--muted); font-weight: 700; margin-top: 4px;">
+                  Example: Missing TCT, tax declaration, or building plan attachment.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="roleDialog" class="role-dialog">
+    <form method="dialog" class="role-dialog__form">
+      <div class="role-dialog__title">Pick role</div>
+      <div class="role-options" role="radiogroup" aria-label="Role options">
+        <label class="role-option">
+          <input type="radio" name="role" value="Admin" checked />
+          <span>Admin</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="MPDO Staff" />
+          <span>MPDO Staff</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="Treasurer's Office" />
+          <span>Treasurer's Office</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="GIS Officer" />
+          <span>GIS Officer</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="Inspection Team" />
+          <span>Inspection Team</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="Approving Authority" />
+          <span>Approving Authority</span>
+        </label>
+      </div>
+      <div class="role-dialog__actions">
+        <button class="btn" value="cancel" type="submit">Cancel</button>
+        <button class="btn btn-primary" id="roleDialogApplyBtn" type="button">Apply</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

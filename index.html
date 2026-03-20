@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Applications List</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Sidebar navigation">
+      <div class="company">
+        <div class="company__name">MPDO Alubijid</div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-item" href="dashboard.html" data-role-allow="Admin,MPDO Staff,Treasurer's Office,GIS Officer,Inspection Team,Approving Authority" data-route="dashboard">
+          Dashboard
+        </a>
+        <a class="nav-item" href="index.html" data-role-allow="Admin,MPDO Staff,Treasurer's Office,GIS Officer,Inspection Team,Approving Authority" data-route="applicants">
+          Applications List
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,MPDO Staff" data-route="applicants">
+          Records Staff (Intake)
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,GIS Officer" data-route="gis">
+          GIS Specialist
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Inspection Team" data-route="inspection">
+          Drone Pilot
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Inspection Team" data-route="inspection">
+          Project Evaluator
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Inspection Team" data-route="inspection">
+          Draftsman
+        </a>
+        <a class="nav-item" href="#" data-role-allow="Admin,Approving Authority" data-route="approval">
+          MPDC Approving Authority (Final Approval)
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <button class="role-btn" id="rolePickerBtn" type="button" title="Change role (Admin only)" style="display: none;">
+          Role: <span id="roleNameInline">Admin</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar__left">
+          <div class="crumb">Dashboard</div>
+          <div class="crumb-sep">/</div>
+          <div class="crumb current">Applications List</div>
+        </div>
+
+        <div class="topbar__right">
+          <input class="search" placeholder="Search..." aria-label="Search applicants" />
+          <div class="user-pill">
+            <img
+              class="avatar-img"
+              src="assets/admin-profile.jpg"
+              alt="John Lawn Doe profile"
+              width="30"
+              height="30"
+            />
+            <div class="user-meta">
+              <div class="user-name">John Lawn Doe</div>
+              <div class="user-role" id="roleNameTop">Admin</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="content__header">
+          <h1 class="page-title">Applications List</h1>
+          <div class="filters" role="region" aria-label="List filters">
+            <label>
+              Sort by
+              <select id="sortBy">
+                <option value="submittedDesc" selected>Submitted (new → old)</option>
+                <option value="submittedAsc">Submitted (old → new)</option>
+                <option value="statusPriority">Status priority</option>
+              </select>
+            </label>
+            <label>
+              Status
+              <select id="statusFilter">
+                <option value="all" selected>All</option>
+                <option value="approved">Approved</option>
+                <option value="under_review">Under Review</option>
+                <option value="rejected">Rejected</option>
+                <option value="pending">Pending</option>
+                <option value="incomplete">Incomplete</option>
+              </select>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;">
+              Archived
+              <span style="display:flex;flex-direction:row;align-items:center;gap:8px;color:var(--text);font-weight:750;">
+                <input type="checkbox" id="includeArchived" />
+                Show archived
+              </span>
+            </label>
+
+            <button class="btn" type="button" id="resetDemoBtn" title="Clear localStorage demo data and reload">
+              Reset Demo Data
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="table" role="table" aria-label="Applications list">
+            <thead>
+              <tr>
+                <th class="col-id">#</th>
+                <th>Full Name</th>
+                <th class="col-status">Status</th>
+                <th>E-mail</th>
+                <th>Date Submitted</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="applicantsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="hint" id="emptyState" hidden>
+          No applications found for this role.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="roleDialog" class="role-dialog">
+    <form method="dialog" class="role-dialog__form">
+      <div class="role-dialog__title">Pick role</div>
+      <div class="role-options" role="radiogroup" aria-label="Role options">
+        <label class="role-option">
+          <input type="radio" name="role" value="Admin" checked />
+          <span>Admin</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="MPDO Staff" />
+          <span>MPDO Staff</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="Treasurer's Office" />
+          <span>Treasurer's Office</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="GIS Officer" />
+          <span>GIS Officer</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="Inspection Team" />
+          <span>Inspection Team</span>
+        </label>
+        <label class="role-option">
+          <input type="radio" name="role" value="Approving Authority" />
+          <span>Approving Authority</span>
+        </label>
+      </div>
+      <div class="role-dialog__actions">
+        <button class="btn" value="cancel" type="submit">Cancel</button>
+        <button class="btn btn-primary" id="roleDialogApplyBtn" type="button">Apply</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- (Removed old dialogs for row actions) -->
+
+  <script src="script.js"></script>
+</body>
+</html>
